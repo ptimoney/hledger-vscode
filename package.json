@@ -1,0 +1,271 @@
+{
+  "name": "hledger-vscode",
+  "displayName": "hledger-vscode",
+  "description": "hledger language server client for VS Code",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": ">=1.105.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "hledgerLanguageServer.reload",
+        "title": "hledger: Reload Language Server",
+        "category": "hledger"
+      },
+      {
+        "command": "hledgerLanguageServer.showLog",
+        "title": "hledger: Show Language Server Log",
+        "category": "hledger"
+      },
+      {
+        "command": "hledgerLanguageServer.toggleInlayHints",
+        "title": "hledger: Toggle Inlay Hints",
+        "category": "hledger"
+      },
+      {
+        "command": "hledgerLanguageServer.toggleValidation",
+        "title": "hledger: Toggle Validation",
+        "category": "hledger"
+      }
+    ],
+    "languages": [
+      {
+        "id": "hledger",
+        "aliases": ["hledger", "Hledger"],
+        "extensions": [".journal", ".hledger"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "configuration": {
+      "title": "hledger Language Server",
+      "properties": {
+        "hledgerLanguageServer.maxNumberOfProblems": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 0,
+          "description": "Maximum number of problems (diagnostics) reported per file."
+        },
+        "hledgerLanguageServer.hledgerPath": {
+          "type": "string",
+          "default": "hledger",
+          "description": "Path to the hledger executable used for validations that rely on hledger."
+        },
+        "hledgerLanguageServer.validation.balance": {
+          "type": "boolean",
+          "default": true,
+          "description": "Validate that transactions are balanced per commodity."
+        },
+        "hledgerLanguageServer.validation.missingAmounts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check that at most one posting in each transaction may omit an amount."
+        },
+        "hledgerLanguageServer.validation.undeclaredAccounts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report usages of accounts that have not been declared."
+        },
+        "hledgerLanguageServer.validation.undeclaredPayees": {
+          "type": "boolean",
+          "default": false,
+          "description": "Report usages of payees that have not been declared."
+        },
+        "hledgerLanguageServer.validation.undeclaredCommodities": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report usages of commodities that have not been declared."
+        },
+        "hledgerLanguageServer.validation.undeclaredTags": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report usages of tags that have not been declared."
+        },
+        "hledgerLanguageServer.validation.dateOrdering": {
+          "type": "boolean",
+          "default": true,
+          "description": "Warn when transaction dates are out of order."
+        },
+        "hledgerLanguageServer.validation.balanceAssertions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check that balance assertions hold."
+        },
+        "hledgerLanguageServer.validation.emptyTransactions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report transactions that have no postings."
+        },
+        "hledgerLanguageServer.validation.invalidDates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report invalid dates in directives or transactions."
+        },
+        "hledgerLanguageServer.validation.futureDates": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report future-dated transactions."
+        },
+        "hledgerLanguageServer.validation.emptyDescriptions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report transactions with empty descriptions."
+        },
+        "hledgerLanguageServer.validation.includeFiles": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report missing or unreadable include files."
+        },
+        "hledgerLanguageServer.validation.circularIncludes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect and report circular include relationships."
+        },
+        "hledgerLanguageServer.severity.undeclaredAccounts": {
+          "type": "string",
+          "enum": ["error", "warning", "information", "hint"],
+          "default": "warning",
+          "description": "Severity level for undeclared account diagnostics."
+        },
+        "hledgerLanguageServer.severity.undeclaredPayees": {
+          "type": "string",
+          "enum": ["error", "warning", "information", "hint"],
+          "default": "warning",
+          "description": "Severity level for undeclared payee diagnostics."
+        },
+        "hledgerLanguageServer.severity.undeclaredCommodities": {
+          "type": "string",
+          "enum": ["error", "warning", "information", "hint"],
+          "default": "warning",
+          "description": "Severity level for undeclared commodity diagnostics."
+        },
+        "hledgerLanguageServer.severity.undeclaredTags": {
+          "type": "string",
+          "enum": ["error", "warning", "information", "hint"],
+          "default": "information",
+          "description": "Severity level for undeclared tag diagnostics."
+        },
+        "hledgerLanguageServer.include.followIncludes": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow include directives when parsing for validation and features."
+        },
+        "hledgerLanguageServer.include.maxDepth": {
+          "type": "number",
+          "default": 10,
+          "minimum": 0,
+          "description": "Maximum depth of include nesting to follow when parsing."
+        },
+        "hledgerLanguageServer.completion.onlyDeclaredAccounts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only offer completions for accounts that have been declared."
+        },
+        "hledgerLanguageServer.completion.onlyDeclaredPayees": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only offer completions for payees that have been declared."
+        },
+        "hledgerLanguageServer.completion.onlyDeclaredCommodities": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only offer completions for commodities that have been declared."
+        },
+        "hledgerLanguageServer.completion.onlyDeclaredTags": {
+          "type": "boolean",
+          "default": true,
+          "description": "Only offer completions for tags that have been declared."
+        },
+        "hledgerLanguageServer.formatting.indentation": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "description": "Number of spaces used to indent postings and directives."
+        },
+        "hledgerLanguageServer.formatting.maxAccountWidth": {
+          "type": "number",
+          "default": 42,
+          "minimum": 0,
+          "description": "Maximum width for account names when aligning columns."
+        },
+        "hledgerLanguageServer.formatting.maxCommodityWidth": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "description": "Maximum width for commodity symbols when aligning columns."
+        },
+        "hledgerLanguageServer.formatting.maxAmountWidth": {
+          "type": "number",
+          "default": 12,
+          "minimum": 0,
+          "description": "Maximum width for amounts when aligning columns."
+        },
+        "hledgerLanguageServer.formatting.minSpacing": {
+          "type": "number",
+          "default": 2,
+          "minimum": 0,
+          "description": "Minimum spaces between aligned columns."
+        },
+        "hledgerLanguageServer.formatting.decimalAlignColumn": {
+          "type": "number",
+          "default": 52,
+          "minimum": 0,
+          "description": "Target column for aligning posting amounts' decimal separators."
+        },
+        "hledgerLanguageServer.formatting.assertionDecimalAlignColumn": {
+          "type": "number",
+          "default": 70,
+          "minimum": 0,
+          "description": "Target column for aligning balance assertion amounts' decimal separators."
+        },
+        "hledgerLanguageServer.inlayHints.showInferredAmounts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inlay hints for inferred posting amounts."
+        },
+        "hledgerLanguageServer.inlayHints.showRunningBalances": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inlay hints for running balances on accounts."
+        },
+        "hledgerLanguageServer.inlayHints.showCostConversions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inlay hints for cost conversions between commodities."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./ && node ./scripts/copy-server.js",
+    "build": "npm run compile",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test:vscode": "vscode-test",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.0",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "eslint": "^9.39.1",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "hledger-language-server": "0.1.0"
+  }
+}
