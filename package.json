@@ -280,7 +280,7 @@
         },
         "hledgerLanguageServer.inlayHints.showInferredAmounts": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Show inlay hints for inferred posting amounts."
         },
         "hledgerLanguageServer.inlayHints.showRunningBalances": {
@@ -290,7 +290,7 @@
         },
         "hledgerLanguageServer.inlayHints.showCostConversions": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Show inlay hints for cost conversions between commodities."
         }
       }
