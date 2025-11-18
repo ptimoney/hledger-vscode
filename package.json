@@ -156,6 +156,11 @@
           "default": true,
           "description": "Detect and report circular include relationships."
         },
+        "hledgerLanguageServer.validation.markAllUndeclaredInstances": {
+          "type": "boolean",
+          "default": true,
+          "description": "Mark all instances of undeclared resources (not just the first occurrence)."
+        },
         "hledgerLanguageServer.severity.undeclaredAccounts": {
           "type": "string",
           "enum": [
@@ -293,6 +298,7 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "build": "tsc -p ./ && node ./scripts/copy-server.js",
     "compile": "tsc -p ./ && node ./scripts/copy-server.js",
     "watch": "tsc -watch -p ./",
     "package": "node esbuild.js --production",
