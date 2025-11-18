@@ -1,10 +1,12 @@
 const esbuild = require('esbuild');
+const path = require('path');
 
 const production = process.argv.includes('--production');
 const watch = process.argv.includes('--watch');
 
 async function main() {
-  const ctx = await esbuild.context({
+  // Build the client extension
+  const clientCtx = await esbuild.context({
     entryPoints: ['src/extension.ts'],
     bundle: true,
     format: 'cjs',
@@ -15,16 +17,31 @@ async function main() {
     outfile: 'out/extension.js',
     external: ['vscode'],
     logLevel: 'silent',
-    plugins: [
-      /* add to the end of plugins array */
-      esbuildProblemMatcherPlugin,
-    ],
+    plugins: [esbuildProblemMatcherPlugin],
   });
+
+  // Build the language server (from the server package)
+  const serverPath = path.resolve(__dirname, '..', 'server', 'src', 'server.ts');
+  const serverCtx = await esbuild.context({
+    entryPoints: [serverPath],
+    bundle: true,
+    format: 'cjs',
+    minify: production,
+    sourcemap: !production,
+    sourcesContent: false,
+    platform: 'node',
+    outfile: 'out/server/server.js',
+    external: ['vscode'],
+    logLevel: 'silent',
+    plugins: [esbuildProblemMatcherPlugin],
+  });
+
   if (watch) {
-    await ctx.watch();
+    await Promise.all([clientCtx.watch(), serverCtx.watch()]);
   } else {
-    await ctx.rebuild();
-    await ctx.dispose();
+    await Promise.all([clientCtx.rebuild(), serverCtx.rebuild()]);
+    await clientCtx.dispose();
+    await serverCtx.dispose();
   }
 }
 
