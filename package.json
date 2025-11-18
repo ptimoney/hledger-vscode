@@ -285,7 +285,7 @@
         },
         "hledgerLanguageServer.inlayHints.showRunningBalances": {
           "type": "boolean",
-          "default": true,
+          "default": false,
           "description": "Show inlay hints for running balances on accounts."
         },
         "hledgerLanguageServer.inlayHints.showCostConversions": {
