@@ -1,6 +1,10 @@
+# Exclude all parent directory files
+../**
+
 # Source files
 src/**
 tests/**
+scripts/**
 
 # Config files
 .eslintrc.json
@@ -8,6 +12,7 @@ eslint.config.mjs
 tsconfig.json
 tsconfig.test.json
 jest.config.js
+esbuild.js
 
 # Test output
 .vscode-test/**
@@ -22,11 +27,7 @@ coverage/**
 .vscode/**
 .gitignore
 .DS_Store
-node_modules/**/.bin/**
-node_modules/**/test/**
-node_modules/**/tests/**
-node_modules/**/*.md
+node_modules/**
 
-# Keep only necessary runtime files
+# Only include bundled output
 !out/extension.js
-!out/server/**/*.js

@@ -32,6 +32,9 @@
   },
   "homepage": "https://github.com/ptimoney/hledger-lsp#readme",
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:hledger"
+  ],
   "contributes": {
     "commands": [
       {
@@ -58,8 +61,14 @@
     "languages": [
       {
         "id": "hledger",
-        "aliases": ["hledger", "Hledger"],
-        "extensions": [".journal", ".hledger"],
+        "aliases": [
+          "hledger",
+          "Hledger"
+        ],
+        "extensions": [
+          ".journal",
+          ".hledger"
+        ],
         "configuration": "./language-configuration.json"
       }
     ],
@@ -149,25 +158,45 @@
         },
         "hledgerLanguageServer.severity.undeclaredAccounts": {
           "type": "string",
-          "enum": ["error", "warning", "information", "hint"],
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
           "default": "warning",
           "description": "Severity level for undeclared account diagnostics."
         },
         "hledgerLanguageServer.severity.undeclaredPayees": {
           "type": "string",
-          "enum": ["error", "warning", "information", "hint"],
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
           "default": "warning",
           "description": "Severity level for undeclared payee diagnostics."
         },
         "hledgerLanguageServer.severity.undeclaredCommodities": {
           "type": "string",
-          "enum": ["error", "warning", "information", "hint"],
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
           "default": "warning",
           "description": "Severity level for undeclared commodity diagnostics."
         },
         "hledgerLanguageServer.severity.undeclaredTags": {
           "type": "string",
-          "enum": ["error", "warning", "information", "hint"],
+          "enum": [
+            "error",
+            "warning",
+            "information",
+            "hint"
+          ],
           "default": "information",
           "description": "Severity level for undeclared tag diagnostics."
         },
@@ -263,10 +292,12 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run package",
     "compile": "tsc -p ./ && node ./scripts/copy-server.js",
-    "build": "npm run compile",
     "watch": "tsc -watch -p ./",
+    "package": "node esbuild.js --production",
+    "compile:esbuild": "node esbuild.js",
+    "watch:esbuild": "node esbuild.js --watch",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test:vscode": "vscode-test",
@@ -281,13 +312,14 @@
     "@types/vscode": "^1.100.0",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
     "@typescript-eslint/parser": "^8.46.3",
+    "esbuild": "^0.27.0",
     "eslint": "^9.39.1",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "vscode-languageclient": "^9.0.1",
-    "hledger-lsp": "^0.1.2"
+    "hledger-lsp": "^0.1.2",
+    "vscode-languageclient": "^9.0.1"
   }
 }
