@@ -25,16 +25,16 @@ export function activate(context: ExtensionContext) {
   outputChannel.appendLine('Activating hledger language client');
 
   // Resolve the language server entrypoint.
-  // Prefer the installed hledger-language-server package (for published extension),
+  // Prefer the installed hledger-lsp package (for published extension),
   // and fall back to the bundled out/server/server.js used in local development.
   let serverModule: string;
   try {
     // When the server is installed as a dependency, this points to server/out/server.js
     // as declared in server/package.json "main".
-    serverModule = require.resolve('hledger-language-server/out/server.js');
+    serverModule = require.resolve('hledger-lsp/out/server.js');
   } catch {
     outputChannel.appendLine(
-      'hledger Language Server: failed to resolve hledger-language-server from node_modules, falling back to bundled out/server/server.js',
+      'hledger Language Server: failed to resolve hledger-lsp from node_modules, falling back to bundled out/server/server.js',
     );
     serverModule = context.asAbsolutePath(
       path.join('out', 'server', 'server.js')

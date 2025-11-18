@@ -1,14 +1,36 @@
 {
-  "name": "hledger-vscode",
-  "displayName": "hledger-vscode",
-  "description": "hledger language server client for VS Code",
-  "version": "0.1.0",
+  "name": "hledger-tools",
+  "displayName": "hledger",
+  "description": "Language server support for hledger plain text accounting",
+  "version": "0.1.2",
+  "publisher": "patrickt",
+  "author": "Patrick Timoney",
+  "license": "MIT",
   "engines": {
     "vscode": ">=1.105.0"
   },
   "categories": [
-    "Other"
+    "Programming Languages",
+    "Linters",
+    "Formatters"
   ],
+  "keywords": [
+    "hledger",
+    "accounting",
+    "plain-text",
+    "ledger",
+    "journal",
+    "bookkeeping"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ptimoney/hledger-lsp",
+    "directory": "vscode-client"
+  },
+  "bugs": {
+    "url": "https://github.com/ptimoney/hledger-lsp/issues"
+  },
+  "homepage": "https://github.com/ptimoney/hledger-lsp#readme",
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -266,6 +288,6 @@
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1",
-    "hledger-language-server": "0.1.0"
+    "hledger-lsp": "^0.1.2"
   }
 }

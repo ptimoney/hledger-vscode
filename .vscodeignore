@@ -1,0 +1,32 @@
+# Source files
+src/**
+tests/**
+
+# Config files
+.eslintrc.json
+eslint.config.mjs
+tsconfig.json
+tsconfig.test.json
+jest.config.js
+
+# Test output
+.vscode-test/**
+out/test/**
+coverage/**
+
+# Build artifacts
+**/*.map
+*.vsix
+
+# Development
+.vscode/**
+.gitignore
+.DS_Store
+node_modules/**/.bin/**
+node_modules/**/test/**
+node_modules/**/tests/**
+node_modules/**/*.md
+
+# Keep only necessary runtime files
+!out/extension.js
+!out/server/**/*.js
