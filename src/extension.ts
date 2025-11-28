@@ -117,6 +117,16 @@ export function activate(context: ExtensionContext) {
     window.showInformationMessage(`hledger inlay hints ${enable ? 'enabled' : 'disabled'}.`);
   });
 
+  const toggleCodeLensCommand = commands.registerCommand('hledgerLanguageServer.toggleCodeLens', async () => {
+    const config = workspace.getConfiguration('hledgerLanguageServer');
+    const currentValue = config.get<boolean>('codeLens.showTransactionCounts', false);
+    const enable = !currentValue;
+
+    await config.update('codeLens.showTransactionCounts', enable, true);
+
+    window.showInformationMessage(`hledger code lens ${enable ? 'enabled' : 'disabled'}.`);
+  });
+
   const toggleValidationCommand = commands.registerCommand('hledgerLanguageServer.toggleValidation', async () => {
     const config = workspace.getConfiguration('hledgerLanguageServer');
     const keys = [
@@ -148,6 +158,7 @@ export function activate(context: ExtensionContext) {
     reloadCommand,
     showLogCommand,
     toggleInlayHintsCommand,
+    toggleCodeLensCommand,
     toggleValidationCommand,
   );
 

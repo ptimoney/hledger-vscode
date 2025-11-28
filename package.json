@@ -53,6 +53,11 @@
         "category": "hledger"
       },
       {
+        "command": "hledgerLanguageServer.toggleCodeLens",
+        "title": "hledger: Toggle Code Lens",
+        "category": "hledger"
+      },
+      {
         "command": "hledgerLanguageServer.toggleValidation",
         "title": "hledger: Toggle Validation",
         "category": "hledger"
@@ -292,6 +297,26 @@
           "type": "boolean",
           "default": false,
           "description": "Show inlay hints for cost conversions between commodities."
+        },
+        "hledgerLanguageServer.codeLens.showTransactionCounts": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show code lenses with transaction counts for accounts."
+        },
+        "hledgerLanguageServer.workspace.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable workspace-aware parsing for multi-file journals. When enabled, leaf files can access accounts, payees, and transactions from their parent files."
+        },
+        "hledgerLanguageServer.workspace.eagerParsing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Pre-parse all journal files on workspace initialization for faster subsequent operations."
+        },
+        "hledgerLanguageServer.workspace.autoDetectRoots": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically detect root journal files that include other files. Disable to manually specify roots."
         }
       }
     }
