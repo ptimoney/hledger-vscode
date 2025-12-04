@@ -313,10 +313,10 @@
           "default": true,
           "description": "Pre-parse all journal files on workspace initialization for faster subsequent operations."
         },
-        "hledgerLanguageServer.workspace.autoDetectRoots": {
+        "hledgerLanguageServer.workspace.autoDetectRoot": {
           "type": "boolean",
           "default": true,
-          "description": "Automatically detect root journal files that include other files. Disable to manually specify roots."
+          "description": "Automatically detect the root journal file using heuristics (prefers files with no parents, many includes, names like 'main'). Disable to manually specify the root file."
         }
       }
     }
