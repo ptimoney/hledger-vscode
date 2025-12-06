@@ -283,6 +283,15 @@
           "minimum": 0,
           "description": "Target column for aligning balance assertion amounts' decimal separators."
         },
+        "hledgerLanguageServer.formatting.signPosition": {
+          "type": "string",
+          "enum": [
+            "after-symbol",
+            "before-symbol"
+          ],
+          "default": "after-symbol",
+          "description": "Placement of negative sign for prefix commodities. 'after-symbol' displays as $-100.00, 'before-symbol' as -$100.00. Affects hover information, inlay hints, and other LSP features. Does not affect postfix commodities like EUR."
+        },
         "hledgerLanguageServer.inlayHints.showInferredAmounts": {
           "type": "boolean",
           "default": false,
