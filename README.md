@@ -72,22 +72,72 @@ The extension adds a status bar item showing the server state:
 
 ## Development
 
-From the repository root (`hledger-lsp`):
+### Using Published Server (Recommended for Contributors)
 
-1. Install dependencies: `npm install`
-2. Build: `npm run build`
-3. Press **F5** in VS Code to launch the Extension Development Host
-4. Open a `.journal` file to test the extension
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/ptimoney/hledger-vscode.git
+   cd hledger-vscode
+   ```
 
-Changes require rebuilding with `npm run build` and reloading the dev host.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Build:
+   ```bash
+   npm run compile
+   ```
+
+4. Press **F5** in VS Code to launch Extension Development Host
+
+5. Open a `.journal` file to test
+
+Changes to the extension require `npm run compile` and reloading the dev host.
+
+### Using Local Server (For Server Development)
+
+If you're also developing the language server:
+
+1. Clone and link the server:
+   ```bash
+   cd /path/to/hledger-lsp
+   npm install && npm run build
+   npm link
+   ```
+
+2. Link in extension:
+   ```bash
+   cd /path/to/hledger-vscode
+   npm link hledger-lsp
+   npm run watch  # or compile
+   ```
+
+3. Press **F5** to test changes
+
+Server changes require `npm run build` in the server directory, then reload the Extension Development Host.
+
+To revert to the published package:
+```bash
+npm unlink hledger-lsp
+npm install
+```
 
 ## License
 
 MIT
 
+## Contributing
+
+Found a bug or have a feature request? Please [open an issue](https://github.com/ptimoney/hledger-vscode/issues) on GitHub.
+
+For server-side bugs (parsing, validation, LSP features), please report them in the [hledger-lsp repository](https://github.com/ptimoney/hledger-lsp/issues).
+
 ## Links
 
-- [hledger-lsp repository](https://github.com/ptimoney/hledger-lsp)
-- [Server features documentation](https://github.com/ptimoney/hledger-lsp/tree/main/server#features)
-- [Configuration guide](https://github.com/ptimoney/hledger-lsp/tree/main/server#user-configuration)
-- [hledger documentation](https://hledger.org/)
+- **Extension Repository**: [hledger-vscode](https://github.com/ptimoney/hledger-vscode)
+- **Language Server**: [hledger-lsp repository](https://github.com/ptimoney/hledger-lsp)
+- **Report Issues**: [Extension issues](https://github.com/ptimoney/hledger-vscode/issues) | [Server issues](https://github.com/ptimoney/hledger-lsp/issues)
+- **Documentation**: [Server features](https://github.com/ptimoney/hledger-lsp/tree/main/server#features) | [Configuration guide](https://github.com/ptimoney/hledger-lsp/tree/main/server#user-configuration)
+- **hledger**: [Official documentation](https://hledger.org/)

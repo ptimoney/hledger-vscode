@@ -1,4 +1,3 @@
-import * as path from 'path';
 import { workspace, window, commands, ExtensionContext, StatusBarAlignment, StatusBarItem } from 'vscode';
 
 import {
@@ -24,21 +23,25 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(statusBarItem);
   outputChannel.appendLine('Activating hledger language client');
 
-  // Resolve the language server entrypoint.
-  // Prefer the installed hledger-lsp package (for published extension),
-  // and fall back to the bundled out/server/server.js used in local development.
+  // Resolve the language server from the installed hledger-lsp package.
+  // This works for both npm install (published package) and npm link (local development).
   let serverModule: string;
   try {
-    // When the server is installed as a dependency, this points to server/out/server.js
-    // as declared in server/package.json "main".
     serverModule = require.resolve('hledger-lsp/out/server.js');
-  } catch {
-    outputChannel.appendLine(
-      'hledger Language Server: failed to resolve hledger-lsp from node_modules, falling back to bundled out/server/server.js',
-    );
-    serverModule = context.asAbsolutePath(
-      path.join('out', 'server', 'server.js')
-    );
+    outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+  } catch (error) {
+    const errorMsg =
+      'ERROR: Failed to resolve hledger-lsp package.\n\n' +
+      'Please ensure the language server is installed:\n' +
+      '  npm install\n\n' +
+      'For local development, you can also use npm link:\n' +
+      '  cd /path/to/hledger-lsp && npm link\n' +
+      '  cd /path/to/hledger-vscode && npm link hledger-lsp\n\n' +
+      `Error details: ${error}`;
+
+    outputChannel.appendLine(errorMsg);
+    window.showErrorMessage('hledger Language Server: Failed to load. See output for details.');
+    throw new Error('hledger-lsp package not found');
   }
 
   // If the extension is launched in debug mode then the debug server options are used
