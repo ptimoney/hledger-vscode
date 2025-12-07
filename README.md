@@ -1,13 +1,15 @@
 # hledger-vscode
 
-VS Code extension for [hledger](https://hledger.org/) plain text accounting, powered by the [hledger-lsp](https://github.com/ptimoney/hledger-lsp) language server.
+VS Code extension for [hledger](https://hledger.org/) the plain text accountingtool,
+powered by the [hledger-lsp](https://github.com/ptimoney/hledger-lsp) language server.
 
 ## Features
 
 This extension provides full IDE support for hledger journal files (`.journal`, `.hledger`):
 
 - **Intelligent completion** for accounts, payees, commodities, and tags
-- **Validation** with configurable rules (balance checking, date ordering, undeclared items, etc.)
+- **Validation** with configurable rules (balance checking, date ordering,
+undeclared items, etc.)
 - **Formatting** with decimal-point alignment
 - **Navigation** (go to definition, find references, document/workspace symbols)
 - **Code actions** (add declarations, rename refactoring)
@@ -31,7 +33,7 @@ The extension will start automatically when you open a `.journal` or `.hledger` 
 
 ### Example Settings
 
-Add to your VS Code `settings.json`:
+Add to your VS Code `settings.json` or set in the Settings UI:
 
 ```json
 {
@@ -49,16 +51,22 @@ Available via the Command Palette (`Ctrl+Shift+P`):
 
 - **Reload Language Server** (`hledgerLanguageServer.reload`) - Restart the server
 - **Show Language Server Log** (`hledgerLanguageServer.showLog`) - View server output
-- **Toggle Inlay Hints** (`hledgerLanguageServer.toggleInlayHints`) - Show/hide all inlay hints
-- **Toggle Validation** (`hledgerLanguageServer.toggleValidation`) - Enable/disable all validation
+- **Toggle Inlay Hints** (`hledgerLanguageServer.toggleInlayHints`) - Show/hide
+all inlay hints
+- **Toggle Validation** (`hledgerLanguageServer.toggleValidation`)
+-Enable/disable all validation
 
 ## Configuration
 
-The extension exposes all language server settings under the `hledgerLanguageServer` prefix. Main categories:
+The extension exposes all language server settings under the
+`hledgerLanguageServer` prefix. Main categories:
 
-- **Validation** (`hledgerLanguageServer.validation.*`) - Toggle individual validation rules
-- **Formatting** (`hledgerLanguageServer.formatting.*`) - Configure indentation and alignment
-- **Inlay Hints** (`hledgerLanguageServer.inlayHints.*`) - Control which hints to display
+- **Validation** (`hledgerLanguageServer.validation.*`) - Toggle individual
+validation rules
+- **Formatting** (`hledgerLanguageServer.formatting.*`) - Configure indentation
+and alignment
+- **Inlay Hints** (`hledgerLanguageServer.inlayHints.*`) - Control which hints
+to display
 - **Completion** (`hledgerLanguageServer.completion.*`) - Filter completion suggestions
 - **Severity** (`hledgerLanguageServer.severity.*`) - Set diagnostic severity levels
 
@@ -67,6 +75,7 @@ For detailed documentation of all settings, visit the [server configuration guid
 ## Status Bar
 
 The extension adds a status bar item showing the server state:
+
 - Click it to open the Language Server output channel
 - Shows: `starting`, `running`, `reloading`, or `stopped`
 
@@ -75,17 +84,20 @@ The extension adds a status bar item showing the server state:
 ### Using Published Server (Recommended for Contributors)
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/ptimoney/hledger-vscode.git
    cd hledger-vscode
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Build:
+
    ```bash
    npm run compile
    ```
@@ -101,6 +113,7 @@ Changes to the extension require `npm run compile` and reloading the dev host.
 If you're also developing the language server:
 
 1. Clone and link the server:
+
    ```bash
    cd /path/to/hledger-lsp
    npm install && npm run build
@@ -108,6 +121,7 @@ If you're also developing the language server:
    ```
 
 2. Link in extension:
+
    ```bash
    cd /path/to/hledger-vscode
    npm link hledger-lsp
@@ -116,9 +130,11 @@ If you're also developing the language server:
 
 3. Press **F5** to test changes
 
-Server changes require `npm run build` in the server directory, then reload the Extension Development Host.
+Server changes require `npm run build` in the server directory, then reload the
+Extension Development Host.
 
 To revert to the published package:
+
 ```bash
 npm unlink hledger-lsp
 npm install
@@ -130,9 +146,10 @@ MIT
 
 ## Contributing
 
-Found a bug or have a feature request? Please [open an issue](https://github.com/ptimoney/hledger-vscode/issues) on GitHub.
+Found a bug or have a feature request? Please [open an issue](https://github.com/ptimoney/hledger-vscode/issues)
 
-For server-side bugs (parsing, validation, LSP features), please report them in the [hledger-lsp repository](https://github.com/ptimoney/hledger-lsp/issues).
+For server-side bugs (parsing, validation, LSP features), please report them
+in the [hledger-lsp repository](https://github.com/ptimoney/hledger-lsp/issues).
 
 ## Links
 

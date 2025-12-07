@@ -1,7 +1,7 @@
 {
-  "name": "hledger-tools",
+  "name": "hledger-vscode",
   "displayName": "hledger",
-  "description": "Language server support for hledger plain text accounting",
+  "description": "Language server support for the hledger plain text accounting tool",
   "version": "0.1.5",
   "publisher": "patrickt",
   "author": "Patrick Timoney",
