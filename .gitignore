@@ -4,3 +4,4 @@ out/
 *.log
 .vscode-test/
 .DS_Store
+RELEASE.md

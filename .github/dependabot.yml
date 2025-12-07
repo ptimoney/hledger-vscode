@@ -1,0 +1,47 @@
+version: 2
+updates:
+  # Monitor npm dependencies
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    # Group minor and patch updates together to reduce PR noise
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+    # Keep hledger-lsp updates separate so they're more visible
+    ignore:
+      - dependency-name: "hledger-lsp"
+        update-types: ["version-update:semver-patch"]
+    labels:
+      - "dependencies"
+      - "npm"
+
+  # Separate check for hledger-lsp to make updates more visible
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 1
+    allow:
+      - dependency-name: "hledger-lsp"
+    labels:
+      - "dependencies"
+      - "hledger-lsp"
+      - "priority"
+
+  # Monitor GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    labels:
+      - "dependencies"
+      - "github-actions"
