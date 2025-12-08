@@ -10,18 +10,19 @@ This extension provides full IDE support for hledger journal files (`.journal`, 
 - **Intelligent completion** for accounts, payees, commodities, and tags
 - **Validation** with configurable rules (balance checking, date ordering,
 undeclared items, etc.)
-- **Formatting** with decimal-point alignment
+- **Auto formatting** with automatic commodity formatting and column alignment 
+throughout the journal file
 - **Navigation** (go to definition, find references, document/workspace symbols)
 - **Code actions** (add declarations, rename refactoring)
 - **Inlay hints** for inferred amounts, running balances, and cost conversions
 - **Semantic highlighting** for richer syntax coloring
-- **Multi-file support** via include directives
+- **Multi-file support** via include directives with automatic or configurable root file detection
 
 For a complete feature list and examples, see the [hledger-lsp server documentation](https://github.com/ptimoney/hledger-lsp/tree/main/server#features).
 
 ## Installation
 
-Install from the VS Code marketplace or the Extensions view (`Ctrl+Shift+X`).
+Install from the [VS Code marketplace](https://marketplace.visualstudio.com/items?itemName=patrickt.hledger-vscode) or the Extensions view (`Ctrl+Shift+X`).
 
 The extension will start automatically when you open a `.journal` or `.hledger` file.
 

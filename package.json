@@ -4,6 +4,7 @@
   "description": "Language server support for the hledger plain text accounting tool",
   "version": "0.1.6",
   "publisher": "patrickt",
+  "icon": "images/icon.png",
   "author": "Patrick Timoney",
   "license": "MIT",
   "engines": {
@@ -31,9 +32,6 @@
   },
   "homepage": "https://github.com/ptimoney/hledger-vscode#readme",
   "main": "./out/extension.js",
-  "activationEvents": [
-    "onLanguage:hledger"
-  ],
   "contributes": {
     "commands": [
       {
