@@ -1,4 +1,6 @@
 import { workspace, window, commands, ExtensionContext, StatusBarAlignment, StatusBarItem } from 'vscode';
+import * as path from 'path';
+import * as fs from 'fs';
 
 import {
   LanguageClient,
@@ -23,20 +25,30 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(statusBarItem);
   outputChannel.appendLine('Activating hledger language client');
 
-  // Resolve the language server from the installed hledger-lsp package.
-  // This works for both npm install (published package) and npm link (local development).
-  let serverModule: string;
+  // Resolve the language server. Prefer a local sibling `hledger-lsp/out/server.js`
+  // (useful when working in a mono-repo or with the server checked out next to this
+  // extension). Fall back to the installed `hledger-lsp` package (npm/yarn/npm link).
+  let serverModule: string | undefined;
   try {
-    serverModule = require.resolve('hledger-lsp/out/server.js');
-    outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+    // Check for a local sibling build: <extension_root>/../../hledger-lsp/out/server.js
+    const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
+    if (fs.existsSync(localServerPath)) {
+      serverModule = localServerPath;
+      outputChannel.appendLine(`hledger Language Server: using local server module at ${serverModule}`);
+    } else {
+      // Fall back to resolving the installed package (this also works with `npm link`)
+      serverModule = require.resolve('hledger-lsp/out/server.js');
+      outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+    }
   } catch (error) {
     const errorMsg =
-      'ERROR: Failed to resolve hledger-lsp package.\n\n' +
-      'Please ensure the language server is installed:\n' +
-      '  npm install\n\n' +
-      'For local development, you can also use npm link:\n' +
-      '  cd /path/to/hledger-lsp && npm link\n' +
-      '  cd /path/to/hledger-vscode && npm link hledger-lsp\n\n' +
+      'ERROR: Failed to resolve hledger-lsp package or local build.\n\n' +
+      'If you want to use a locally-built language server for development, either:\n' +
+      "  - build the server and place it at '../hledger-lsp/out/server.js' relative to the extension, or\n" +
+      "  - use npm link:\n" +
+      '      cd /path/to/hledger-lsp && npm link\n' +
+      '      cd /path/to/hledger-vscode && npm link hledger-lsp\n\n' +
+      'Or ensure the dependency is installed via `npm install` in the extension.\n\n' +
       `Error details: ${error}`;
 
     outputChannel.appendLine(errorMsg);
