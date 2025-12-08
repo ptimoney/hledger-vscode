@@ -10,13 +10,14 @@ This extension provides full IDE support for hledger journal files (`.journal`, 
 - **Intelligent completion** for accounts, payees, commodities, and tags
 - **Validation** with configurable rules (balance checking, date ordering,
 undeclared items, etc.)
-- **Auto formatting** with automatic commodity formatting and column alignment 
+- **Auto formatting** with automatic commodity formatting and column alignment
 throughout the journal file
 - **Navigation** (go to definition, find references, document/workspace symbols)
 - **Code actions** (add declarations, rename refactoring)
 - **Inlay hints** for inferred amounts, running balances, and cost conversions
 - **Semantic highlighting** for richer syntax coloring
 - **Multi-file support** via include directives with automatic or configurable root file detection
+- **Workspace graph** tree view showing your journal file structure and include relationships
 
 For a complete feature list and examples, see the [hledger-lsp server documentation](https://github.com/ptimoney/hledger-lsp/tree/main/server#features).
 
@@ -46,16 +47,41 @@ Add to your VS Code `settings.json` or set in the Settings UI:
 
 For all available settings, see the [Server Configuration Documentation](https://github.com/ptimoney/hledger-lsp/tree/main/server#user-configuration).
 
+## Workspace Graph
+
+For multi-file journals using `include` directives, the extension provides a **Hledger Workspace** tree view in the Explorer sidebar. This shows the hierarchical structure of your journal files and their include relationships.
+
+### Features
+
+- **Visual hierarchy**: See which files include which other files at a glance
+- **Quick navigation**: Click any file to open it in the editor
+- **Workspace-relative paths**: Shows file locations relative to your workspace
+- **Automatic updates**: Refreshes when files change or when you click the refresh button
+
+### Example
+
+```
+EXPLORER
+├─ Hledger Workspace          [🔄]
+   ├─ 📄 main.journal
+   ├─ 📄 2024.journal
+   │  ├─ 📄 expenses.journal
+   │  └─ 📄 income.journal
+   └─ 📄 accounts.journal
+```
+
+The tree view appears automatically when you open a workspace containing hledger journal files (`.journal` or `.hledger` extensions).
+
 ## Commands
 
 Available via the Command Palette (`Ctrl+Shift+P`):
 
 - **Reload Language Server** (`hledgerLanguageServer.reload`) - Restart the server
 - **Show Language Server Log** (`hledgerLanguageServer.showLog`) - View server output
-- **Toggle Inlay Hints** (`hledgerLanguageServer.toggleInlayHints`) - Show/hide
-all inlay hints
-- **Toggle Validation** (`hledgerLanguageServer.toggleValidation`)
--Enable/disable all validation
+- **Toggle Inlay Hints** (`hledgerLanguageServer.toggleInlayHints`) - Show/hide all inlay hints
+- **Toggle Code Lens** (`hledgerLanguageServer.toggleCodeLens`) - Show/hide code lens
+- **Toggle Validation** (`hledgerLanguageServer.toggleValidation`) - Enable/disable all validation
+- **Refresh Workspace Graph** (`hledgerLanguageServer.refreshWorkspaceGraph`) - Reload the workspace tree view
 
 ## Configuration
 

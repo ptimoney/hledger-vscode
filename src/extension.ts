@@ -1,4 +1,4 @@
-import { workspace, window, commands, ExtensionContext, StatusBarAlignment, StatusBarItem } from 'vscode';
+import { workspace, window, commands, ExtensionContext, StatusBarAlignment, StatusBarItem, Uri } from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -9,9 +9,12 @@ import {
   TransportKind
 } from 'vscode-languageclient/node';
 
+import { WorkspaceGraphProvider } from './workspaceGraphProvider';
+
 let client: LanguageClient | undefined;
 let outputChannel = window.createOutputChannel('hledger Language Server');
 let statusBarItem: StatusBarItem | undefined;
+let workspaceGraphProvider: WorkspaceGraphProvider | undefined;
 
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(outputChannel);
@@ -190,18 +193,56 @@ export function activate(context: ExtensionContext) {
     window.showInformationMessage(`hledger validation ${enable ? 'enabled' : 'disabled'}.`);
   });
 
+  // Create workspace graph tree view
+  workspaceGraphProvider = new WorkspaceGraphProvider(undefined);
+  const treeView = window.createTreeView('hledgerWorkspaceGraph', {
+    treeDataProvider: workspaceGraphProvider,
+    showCollapseAll: true
+  });
+
+  context.subscriptions.push(treeView);
+
+  // Command to refresh the workspace graph
+  const refreshWorkspaceGraphCommand = commands.registerCommand(
+    'hledgerLanguageServer.refreshWorkspaceGraph',
+    () => {
+      if (workspaceGraphProvider) {
+        workspaceGraphProvider.refresh();
+      }
+    }
+  );
+
+  // Command to open a file from the tree view
+  const openFileCommand = commands.registerCommand(
+    'hledgerLanguageServer.openFile',
+    (filePath: string) => {
+      if (filePath) {
+        workspace.openTextDocument(Uri.file(filePath)).then(doc => {
+          window.showTextDocument(doc);
+        });
+      }
+    }
+  );
+
   context.subscriptions.push(
     reloadCommand,
     showLogCommand,
     toggleInlayHintsCommand,
     toggleCodeLensCommand,
     toggleValidationCommand,
+    refreshWorkspaceGraphCommand,
+    openFileCommand,
   );
 
   // Start the client. This will also launch the server
   client.start();
   if (statusBarItem) {
     statusBarItem.text = 'hledger: running';
+  }
+
+  // Set the client on the workspace graph provider after it's started
+  if (workspaceGraphProvider) {
+    workspaceGraphProvider.setClient(client);
   }
 }
 

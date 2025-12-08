@@ -63,8 +63,32 @@
         "command": "hledgerLanguageServer.toggleValidation",
         "title": "hledger: Toggle Validation",
         "category": "hledger"
+      },
+      {
+        "command": "hledgerLanguageServer.refreshWorkspaceGraph",
+        "title": "Refresh",
+        "category": "hledger",
+        "icon": "$(refresh)"
       }
     ],
+    "views": {
+      "explorer": [
+        {
+          "id": "hledgerWorkspaceGraph",
+          "name": "Hledger Workspace",
+          "when": "resourceLangId == hledger || workspaceContains:**/*.journal || workspaceContains:**/*.hledger"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "hledgerLanguageServer.refreshWorkspaceGraph",
+          "when": "view == hledgerWorkspaceGraph",
+          "group": "navigation"
+        }
+      ]
+    },
     "languages": [
       {
         "id": "hledger",
