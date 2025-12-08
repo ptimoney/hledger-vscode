@@ -1,0 +1,82 @@
+name: CI Multi-Platform
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['20.x']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build
+      run: npm run compile
+
+    - name: Package (smoke test)
+      run: npm run package
+
+    - name: Upload VSIX artifact
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v4
+      with:
+        name: vsix-package
+        path: '*.vsix'
+        if-no-files-found: ignore
+
+  # Optional: Test the extension with different hledger-lsp versions
+  compatibility-test:
+    name: Test with hledger-lsp versions
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        lsp-version: ['latest', '0.1.7', '0.1.8']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install specific hledger-lsp version
+      run: npm install hledger-lsp@${{ matrix.lsp-version }}
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build
+      run: npm run compile
