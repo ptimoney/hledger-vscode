@@ -32,3 +32,5 @@ node_modules/**
 # Only include bundled output
 !out/extension.js
 !out/server/server.js
+
+# (We bundle the server/client into out/ so node_modules need not be packaged)

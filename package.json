@@ -8,7 +8,7 @@
   "author": "Patrick Timoney",
   "license": "MIT",
   "engines": {
-    "vscode": ">=1.105.0"
+    "vscode": ">=1.100.0"
   },
   "categories": [
     "Programming Languages",
@@ -33,7 +33,9 @@
   "homepage": "https://github.com/ptimoney/hledger-vscode#readme",
   "main": "./out/extension.js",
   "activationEvents": [
-    "onLanguage:hledger"
+    "onLanguage:hledger",
+    "workspaceContains:**/*.journal",
+    "onCommand:hledgerLanguageServer.reload"
   ],
   "contributes": {
     "commands": [
@@ -331,8 +333,12 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run build",
     "compile": "tsc -p ./",
+    "build:ts": "tsc -p ./",
+    "build:server": "esbuild node_modules/hledger-lsp/out/server.js --bundle --platform=node --minify --outfile=out/server/server.js --external:vscode",
+    "build:extension": "esbuild out/extension.js --bundle --platform=node --minify --outfile=out/extension.js --external:vscode --allow-overwrite",
+    "build": "npm run build:ts && npm run build:server && npm run build:extension",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
@@ -352,7 +358,8 @@
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1"
+    "typescript-eslint": "^8.48.1",
+    "esbuild": "^0.18.19"
   },
   "dependencies": {
     "hledger-lsp": "^0.1.11",

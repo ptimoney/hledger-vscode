@@ -37,7 +37,7 @@ jobs:
       run: npm test
 
     - name: Build
-      run: npm run compile
+      run: npm run build
 
     - name: Package (smoke test)
       run: npm run package
@@ -79,4 +79,4 @@ jobs:
       run: npm test
 
     - name: Build
-      run: npm run compile
+      run: npm run build

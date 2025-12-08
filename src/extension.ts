@@ -25,20 +25,28 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(statusBarItem);
   outputChannel.appendLine('Activating hledger language client');
 
-  // Resolve the language server. Prefer a local sibling `hledger-lsp/out/server.js`
-  // (useful when working in a mono-repo or with the server checked out next to this
-  // extension). Fall back to the installed `hledger-lsp` package (npm/yarn/npm link).
+  // Resolve the language server. Prefer a bundled server at `out/server/server.js` (this
+  // is produced by our esbuild bundling). If not present, prefer a local sibling build
+  // useful during development, and finally fall back to the installed `hledger-lsp`
+  // package (npm/yarn/npm link).
   let serverModule: string | undefined;
   try {
-    // Check for a local sibling build: <extension_root>/../../hledger-lsp/out/server.js
-    const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
-    if (fs.existsSync(localServerPath)) {
-      serverModule = localServerPath;
-      outputChannel.appendLine(`hledger Language Server: using local server module at ${serverModule}`);
+    // Prefer a bundled server inside the extension: <extension_root>/out/server/server.js
+    const bundledServerPath = path.resolve(context.extensionPath, 'out', 'server', 'server.js');
+    if (fs.existsSync(bundledServerPath)) {
+      serverModule = bundledServerPath;
+      outputChannel.appendLine(`hledger Language Server: using bundled server at ${serverModule}`);
     } else {
-      // Fall back to resolving the installed package (this also works with `npm link`)
-      serverModule = require.resolve('hledger-lsp/out/server.js');
-      outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+      // Check for a local sibling build: <extension_root>/../../hledger-lsp/out/server.js
+      const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
+      if (fs.existsSync(localServerPath)) {
+        serverModule = localServerPath;
+        outputChannel.appendLine(`hledger Language Server: using local server module at ${serverModule}`);
+      } else {
+        // Fall back to resolving the installed package (this also works with `npm link`)
+        serverModule = require.resolve('hledger-lsp/out/server.js');
+        outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+      }
     }
   } catch (error) {
     const errorMsg =
