@@ -32,6 +32,9 @@
   },
   "homepage": "https://github.com/ptimoney/hledger-vscode#readme",
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onLanguage:hledger"
+  ],
   "contributes": {
     "commands": [
       {
