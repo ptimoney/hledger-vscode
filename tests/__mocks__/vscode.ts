@@ -25,6 +25,11 @@ export const window = {
     return item;
   }),
   showInformationMessage: jest.fn(),
+  createTreeView: jest.fn((_viewId: string, _options: any) => {
+    return {
+      dispose: jest.fn(),
+    };
+  }),
 };
 
 // Simple per-section configuration store so tests and code share the same object
@@ -49,6 +54,7 @@ export const workspace = {
     return configStore[key];
   }),
   createFileSystemWatcher: jest.fn(() => ({})),
+  workspaceFolders: undefined as any,
 };
 
 export const commands = {
@@ -59,6 +65,61 @@ export const commands = {
 };
 
 export const StatusBarAlignment = { Left: 1 } as const;
+
+// TreeItem and related types for workspace graph provider
+export class TreeItem {
+  label?: string;
+  resourceUri?: any;
+  command?: any;
+  contextValue?: string;
+  iconPath?: any;
+  tooltip?: string;
+  description?: string;
+  collapsibleState?: number;
+
+  constructor(label: string, collapsibleState?: number) {
+    this.label = label;
+    this.collapsibleState = collapsibleState;
+  }
+}
+
+export const TreeItemCollapsibleState = {
+  None: 0,
+  Collapsed: 1,
+  Expanded: 2,
+} as const;
+
+export class EventEmitter<T> {
+  event: any;
+
+  constructor() {
+    this.event = jest.fn();
+  }
+
+  fire(_data?: T): void {
+    // Mock implementation
+  }
+
+  dispose(): void {
+    // Mock implementation
+  }
+}
+
+export class ThemeIcon {
+  constructor(public id: string) {}
+}
+
+export class Uri {
+  constructor(public fsPath: string) {}
+
+  static file(path: string): Uri {
+    return new Uri(path);
+  }
+
+  static parse(value: string): Uri {
+    return new Uri(value);
+  }
+}
 
 // Re-export helpers for tests
 export const __test = {
