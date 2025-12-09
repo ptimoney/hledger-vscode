@@ -386,7 +386,7 @@
     "esbuild": "^0.18.19"
   },
   "dependencies": {
-    "hledger-lsp": "^0.1.11",
+    "hledger-lsp": "^0.1.12",
     "vscode-languageclient": "^9.0.1"
   }
 }
