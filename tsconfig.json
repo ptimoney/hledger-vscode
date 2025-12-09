@@ -14,7 +14,7 @@
 		"declaration": true,
 		"declarationMap": true,
 		"moduleResolution": "node",
-		"types": ["node", "vscode"]
+		"types": ["node", "vscode", "mocha"]
 	},
 	"include": [
 		"src/**/*"

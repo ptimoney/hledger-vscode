@@ -69,10 +69,11 @@ export function activate(context: ExtensionContext) {
   let serverModule: string | undefined;
   try {
     // First, check for a local sibling build - highest priority for development
-    const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
+    const localServerPath = path.resolve(context.extensionPath, '..', 'hledger-lsp', 'out', 'server.js');
+    outputChannel.appendLine(`looking in: ${localServerPath}`)
     if (fs.existsSync(localServerPath)) {
       serverModule = localServerPath;
-      outputChannel.appendLine(`hledger Language Server: using local development build at ${serverModule}`);
+      outputChannel.appendLine(`hledger Language> Server: using local development build at ${serverModule}`);
     } else {
       // Try to resolve from node_modules (also works with npm link)
       try {
@@ -297,6 +298,31 @@ export function activate(context: ExtensionContext) {
   if (workspaceGraphProvider) {
     workspaceGraphProvider.setClient(client);
   }
+
+  // Refresh inlay hints when document content changes
+  // This ensures hints update their positions when lines are added/removed
+  let refreshTimeout: NodeJS.Timeout | undefined;
+  const changeListener = workspace.onDidChangeTextDocument(async (event) => {
+    // Only refresh for hledger documents
+    if (event.document.languageId === 'hledger') {
+      // Debounce to avoid excessive refreshes while typing
+      if (refreshTimeout) {
+        clearTimeout(refreshTimeout);
+      }
+
+      refreshTimeout = setTimeout(async () => {
+        try {
+          // Trigger the language server to refresh inlay hints
+          // This will cause VS Code to re-request hints from the server
+          await commands.executeCommand('editor.action.inlayHints.refresh');
+        } catch {
+          // Silently ignore - not all VS Code versions support this command
+        }
+      }, 100); // 100ms debounce
+    }
+  });
+
+  context.subscriptions.push(changeListener);
 }
 
 export function deactivate(): Thenable<void> | undefined {
