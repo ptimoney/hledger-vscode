@@ -299,30 +299,10 @@ export function activate(context: ExtensionContext) {
     workspaceGraphProvider.setClient(client);
   }
 
-  // Refresh inlay hints when document content changes
-  // This ensures hints update their positions when lines are added/removed
-  let refreshTimeout: NodeJS.Timeout | undefined;
-  const changeListener = workspace.onDidChangeTextDocument(async (event) => {
-    // Only refresh for hledger documents
-    if (event.document.languageId === 'hledger') {
-      // Debounce to avoid excessive refreshes while typing
-      if (refreshTimeout) {
-        clearTimeout(refreshTimeout);
-      }
-
-      refreshTimeout = setTimeout(async () => {
-        try {
-          // Trigger the language server to refresh inlay hints
-          // This will cause VS Code to re-request hints from the server
-          await commands.executeCommand('editor.action.inlayHints.refresh');
-        } catch {
-          // Silently ignore - not all VS Code versions support this command
-        }
-      }, 100); // 100ms debounce
-    }
-  });
-
-  context.subscriptions.push(changeListener);
+  // Note: Inlay hint refresh is now handled by the language server
+  // The server sends workspace/inlayHint/refresh notifications when documents change,
+  // which VS Code's LSP client automatically responds to.
+  // No client-side refresh listener needed.
 }
 
 export function deactivate(): Thenable<void> | undefined {
