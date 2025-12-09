@@ -16,6 +16,40 @@ let outputChannel = window.createOutputChannel('hledger Language Server');
 let statusBarItem: StatusBarItem | undefined;
 let workspaceGraphProvider: WorkspaceGraphProvider | undefined;
 
+/**
+ * Attempts to read the version from hledger-lsp package.json
+ */
+function getHledgerLspVersion(serverModulePath: string): string | undefined {
+  try {
+    // Navigate up from server.js to find package.json
+    const serverDir = path.dirname(serverModulePath);
+    let packageJsonPath: string;
+
+    // For bundled server: out/server/server.js -> need to go up to node_modules/hledger-lsp
+    // For local server: ../hledger-lsp/out/server.js -> go to ../hledger-lsp
+    // For npm package: node_modules/hledger-lsp/out/server.js -> go up one level
+
+    // Try common locations
+    const possiblePaths = [
+      path.join(serverDir, '..', 'package.json'), // For npm package or local build
+      path.join(serverDir, '..', '..', 'hledger-lsp', 'package.json'), // For some local setups
+      require.resolve('hledger-lsp/package.json'), // Use Node resolution
+    ];
+
+    for (const testPath of possiblePaths) {
+      if (fs.existsSync(testPath)) {
+        packageJsonPath = testPath;
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+        return packageJson.version;
+      }
+    }
+  } catch (error) {
+    // Silently fail - version logging is not critical
+    outputChannel.appendLine(`Note: Could not determine hledger-lsp version: ${error}`);
+  }
+  return undefined;
+}
+
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(outputChannel);
 
@@ -28,28 +62,41 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(statusBarItem);
   outputChannel.appendLine('Activating hledger language client');
 
-  // Resolve the language server. Prefer a bundled server at `out/server/server.js` (this
-  // is produced by our esbuild bundling). If not present, prefer a local sibling build
-  // useful during development, and finally fall back to the installed `hledger-lsp`
-  // package (npm/yarn/npm link).
+  // Resolve the language server in priority order:
+  // 1. Local sibling build for active development: <extension_root>/../../hledger-lsp/out/server.js
+  // 2. npm package (node_modules or npm link): hledger-lsp/out/server.js
+  // 3. Bundled server (fallback for published extension): <extension_root>/out/server/server.js
   let serverModule: string | undefined;
   try {
-    // Prefer a bundled server inside the extension: <extension_root>/out/server/server.js
-    const bundledServerPath = path.resolve(context.extensionPath, 'out', 'server', 'server.js');
-    if (fs.existsSync(bundledServerPath)) {
-      serverModule = bundledServerPath;
-      outputChannel.appendLine(`hledger Language Server: using bundled server at ${serverModule}`);
+    // First, check for a local sibling build - highest priority for development
+    const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
+    if (fs.existsSync(localServerPath)) {
+      serverModule = localServerPath;
+      outputChannel.appendLine(`hledger Language Server: using local development build at ${serverModule}`);
     } else {
-      // Check for a local sibling build: <extension_root>/../../hledger-lsp/out/server.js
-      const localServerPath = path.resolve(context.extensionPath, '..', '..', 'hledger-lsp', 'out', 'server.js');
-      if (fs.existsSync(localServerPath)) {
-        serverModule = localServerPath;
-        outputChannel.appendLine(`hledger Language Server: using local server module at ${serverModule}`);
-      } else {
-        // Fall back to resolving the installed package (this also works with `npm link`)
+      // Try to resolve from node_modules (also works with npm link)
+      try {
         serverModule = require.resolve('hledger-lsp/out/server.js');
-        outputChannel.appendLine(`hledger Language Server: resolved server module at ${serverModule}`);
+        outputChannel.appendLine(`hledger Language Server: using npm package at ${serverModule}`);
+      } catch {
+        // Fall back to bundled server if npm package not found
+        const bundledServerPath = path.resolve(context.extensionPath, 'out', 'server', 'server.js');
+        if (fs.existsSync(bundledServerPath)) {
+          serverModule = bundledServerPath;
+          outputChannel.appendLine(`hledger Language Server: using bundled server at ${serverModule}`);
+        }
       }
+    }
+
+    // Log the hledger-lsp version if available
+    if (serverModule) {
+      const version = getHledgerLspVersion(serverModule);
+      if (version) {
+        outputChannel.appendLine(`hledger-lsp version: ${version}`);
+      }
+    } else {
+      // No server module found - throw an error
+      throw new Error('No hledger-lsp server module found');
     }
   } catch (error) {
     const errorMsg =
@@ -78,6 +125,12 @@ export function activate(context: ExtensionContext) {
     } else {
       throw new Error('hledger-lsp package not found');
     }
+  }
+
+  // TypeScript assertion: at this point serverModule should always be defined
+  // (either found successfully or set to '' in test environments)
+  if (serverModule === undefined) {
+    throw new Error('Internal error: serverModule is undefined after initialization');
   }
 
   // If the extension is launched in debug mode then the debug server options are used
