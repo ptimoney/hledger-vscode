@@ -375,15 +375,15 @@
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.2",
     "@types/vscode": "^1.100.0",
     "@vscode/vsce": "^3.0.0",
     "eslint": "^9.39.1",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.1",
-    "esbuild": "^0.18.19"
+    "typescript-eslint": "^8.49.0",
+    "esbuild": "^0.27.1"
   },
   "dependencies": {
     "hledger-lsp": "^0.1.12",
