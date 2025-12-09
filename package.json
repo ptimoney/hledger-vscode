@@ -372,7 +372,7 @@
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",
-    "@types/glob": "^8.1.0",
+    "@types/glob": "^9.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.10.2",
     "@types/sinon": "^21.0.0",
