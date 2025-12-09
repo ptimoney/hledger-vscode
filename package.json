@@ -2,7 +2,7 @@
   "name": "hledger-lsp-vscode",
   "displayName": "hledger-lsp",
   "description": "Language server support for the hledger plain text accounting tool",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "publisher": "patrickt",
   "icon": "images/icon.png",
   "author": "Patrick Timoney",
