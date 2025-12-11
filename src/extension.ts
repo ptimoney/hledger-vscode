@@ -27,7 +27,8 @@ function getHledgerLspVersion(serverModulePath: string): string | undefined {
 
     // For bundled server: out/server/server.js -> need to go up to node_modules/hledger-lsp
     // For local server: ../hledger-lsp/out/server.js -> go to ../hledger-lsp
-    // For npm package: node_modules/hledger-lsp/out/server.js -> go up one level
+    // For npm package: no
+    // de_modules/hledger-lsp/out/server.js -> go up one level
 
     // Try common locations
     const possiblePaths = [
@@ -299,10 +300,6 @@ export function activate(context: ExtensionContext) {
     workspaceGraphProvider.setClient(client);
   }
 
-  // Note: Inlay hint refresh is now handled by the language server
-  // The server sends workspace/inlayHint/refresh notifications when documents change,
-  // which VS Code's LSP client automatically responds to.
-  // No client-side refresh listener needed.
 }
 
 export function deactivate(): Thenable<void> | undefined {
