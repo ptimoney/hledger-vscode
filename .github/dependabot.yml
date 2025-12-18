@@ -16,6 +16,12 @@ updates:
           - "patch"
         exclude-patterns:
           - "hledger-lsp"
+    ignore:
+      # Keep @types/vscode at minimum supported version to maintain backward compatibility
+      - dependency-name: "@types/vscode"
+        update-types:
+          - "version-update:semver-minor"
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "npm"

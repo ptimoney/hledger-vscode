@@ -8,7 +8,7 @@
   "author": "Patrick Timoney",
   "license": "MIT",
   "engines": {
-    "vscode": ">=1.100.0"
+    "vscode": "^1.100.0"
   },
   "categories": [
     "Programming Languages",
