@@ -316,7 +316,12 @@
             "before-symbol"
           ],
           "default": "after-symbol",
-          "description": "Placement of negative sign for prefix commodities. 'after-symbol' displays as $-100.00, 'before-symbol' as -$100.00. Affects hover information, inlay hints, and other LSP features. Does not affect postfix commodities like EUR."
+          "description": "Placement of negative or positive (if used) sign for prefix commodities. 'after-symbol' displays as $-100.00, 'before-symbol' as -$100.00. Affects hover information, inlay hints, and other LSP features. Does not affect postfix commodities like EUR."
+        },
+        "hledgerLanguageServer.formatting.showPositivesSign": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show positive (+) sign for positive amounts in hover information, auto formatting, inlay hints, and other LSP features."
         },
         "hledgerLanguageServer.inlayHints.showInferredAmounts": {
           "type": "boolean",
