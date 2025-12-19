@@ -1,6 +1,6 @@
 {
   "name": "hledger-lsp-vscode",
-  "displayName": "hledger-lsp",
+  "displayName": "hledger",
   "description": "Language server support for the hledger plain text accounting tool",
   "version": "0.2.1",
   "publisher": "patrickt",
