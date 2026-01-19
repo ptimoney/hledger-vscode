@@ -394,7 +394,7 @@
     "typescript-eslint": "^8.53.0"
   },
   "dependencies": {
-    "hledger-lsp": "^0.2.13",
+    "hledger-lsp": "^0.2.15",
     "vscode-languageclient": "^9.0.1"
   }
 }
