@@ -122,6 +122,11 @@
           "default": true,
           "description": "Validate that transactions are balanced per commodity."
         },
+        "hledgerLanguageServer.validation.requireExplicitCosts": {
+          "type": "boolean",
+          "default": false,
+          "description": "Require explicit @ or @@ cost notation for multi-commodity transactions. When disabled (default), costs are auto-inferred like hledger's autobalanced mode. When enabled, mirrors hledger's stricter balanced check."
+        },
         "hledgerLanguageServer.validation.missingAmounts": {
           "type": "boolean",
           "default": true,
