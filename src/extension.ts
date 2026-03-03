@@ -6,7 +6,8 @@ import {
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
-  TransportKind
+  TransportKind,
+  State
 } from 'vscode-languageclient/node';
 
 import { WorkspaceGraphProvider } from './workspaceGraphProvider';
@@ -162,6 +163,9 @@ export function activate(context: ExtensionContext) {
       fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
     },
     outputChannel,
+    connectionOptions: {
+      maxRestartCount: 5,
+    },
   };
 
   // Create the language client and start the client.
@@ -293,6 +297,26 @@ export function activate(context: ExtensionContext) {
     refreshWorkspaceGraphCommand,
     openFileCommand,
   );
+
+  // Update status bar on state changes (handles restarts after crashes)
+  client.onDidChangeState(({ oldState, newState }) => {
+    if (!statusBarItem) return;
+    switch (newState) {
+      case State.Running:
+        statusBarItem.text = 'hledger: running';
+        if (oldState === State.Starting && workspaceGraphProvider) {
+          workspaceGraphProvider.refresh();
+        }
+        break;
+      case State.Starting:
+        statusBarItem.text = 'hledger: restarting';
+        outputChannel.appendLine('Language server restarting...');
+        break;
+      case State.Stopped:
+        statusBarItem.text = 'hledger: stopped';
+        break;
+    }
+  });
 
   // Start the client. This will also launch the server
   client.start();

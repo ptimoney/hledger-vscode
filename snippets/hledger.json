@@ -1,0 +1,73 @@
+{
+  "Transaction": {
+    "prefix": "txn",
+    "body": [
+      "${1:${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}} ${3:Description}",
+      "    ${4:expenses:unknown}  ${5:\\$0.00}",
+      "    ${6:assets:checking}",
+      ""
+    ],
+    "description": "New transaction with date, description, and two postings"
+  },
+  "Account directive": {
+    "prefix": "account",
+    "body": [
+      "account ${1:expenses:unknown}"
+    ],
+    "description": "Declare an account"
+  },
+  "Commodity directive": {
+    "prefix": "commodity",
+    "body": [
+      "commodity ${1:1,000.00 ${2:USD}}"
+    ],
+    "description": "Declare a commodity with format"
+  },
+  "Payee directive": {
+    "prefix": "payee",
+    "body": [
+      "payee ${1:Payee Name}"
+    ],
+    "description": "Declare a payee"
+  },
+  "Tag directive": {
+    "prefix": "tag",
+    "body": [
+      "tag ${1:tagname}"
+    ],
+    "description": "Declare a tag"
+  },
+  "Include directive": {
+    "prefix": "include",
+    "body": [
+      "include ${1:filename.journal}"
+    ],
+    "description": "Include another journal file"
+  },
+  "Periodic transaction": {
+    "prefix": "periodic",
+    "body": [
+      "~ ${1|every month,every week,every quarter,every year,monthly,weekly,quarterly,yearly|}",
+      "    ${2:expenses:unknown}  ${3:\\$0.00}",
+      "    ${4:assets:checking}",
+      ""
+    ],
+    "description": "Periodic transaction rule"
+  },
+  "Comment block": {
+    "prefix": "comment",
+    "body": [
+      "comment",
+      "${1:Multi-line comment text here.}",
+      "end comment"
+    ],
+    "description": "Multi-line comment block"
+  },
+  "Alias directive": {
+    "prefix": "alias",
+    "body": [
+      "alias ${1:old account} = ${2:new account}"
+    ],
+    "description": "Account alias"
+  }
+}

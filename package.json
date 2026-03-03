@@ -103,6 +103,12 @@
         "configuration": "./language-configuration.json"
       }
     ],
+    "snippets": [
+      {
+        "language": "hledger",
+        "path": "./snippets/hledger.json"
+      }
+    ],
     "configuration": {
       "title": "hledger Language Server",
       "properties": {
