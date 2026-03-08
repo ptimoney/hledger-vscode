@@ -2,13 +2,13 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { LanguageClient } from 'vscode-languageclient/node';
 
-interface WorkspaceGraphEntry {
+export interface WorkspaceGraphEntry {
   display: string;
   path: string;
   uri: string;
 }
 
-class WorkspaceGraphItem extends vscode.TreeItem {
+export class WorkspaceGraphItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     public readonly filePath: string,
@@ -99,7 +99,7 @@ export class WorkspaceGraphProvider implements vscode.TreeDataProvider<Workspace
     }
   }
 
-  private buildTree(entries: WorkspaceGraphEntry[]): WorkspaceGraphItem[] {
+  buildTree(entries: WorkspaceGraphEntry[]): WorkspaceGraphItem[] {
     if (entries.length === 0) return [];
 
     const items: WorkspaceGraphItem[] = [];
@@ -145,7 +145,7 @@ export class WorkspaceGraphProvider implements vscode.TreeDataProvider<Workspace
     return items;
   }
 
-  private getDepth(display: string): number {
+  getDepth(display: string): number {
     let depth = 0;
 
     // Count leading spaces (groups of 4)
@@ -162,7 +162,7 @@ export class WorkspaceGraphProvider implements vscode.TreeDataProvider<Workspace
     return depth;
   }
 
-  private extractLabel(display: string): string {
+  extractLabel(display: string): string {
     // Remove tree characters and return the filename
     return display.replace(/^[\s│├└─]+/, '').trim();
   }
