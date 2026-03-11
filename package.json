@@ -390,7 +390,7 @@
     "@types/chai": "^5.2.3",
     "@types/glob": "^9.0.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^25.3.5",
+    "@types/node": "^25.4.0",
     "@types/sinon": "^21.0.0",
     "@types/vscode": "^1.100.0",
     "@vscode/test-electron": "^2.5.2",
@@ -402,7 +402,7 @@
     "mocha": "^11.7.5",
     "sinon": "^21.0.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.56.1"
+    "typescript-eslint": "^8.57.0"
   },
   "dependencies": {
     "hledger-lsp": "^0.4.8",
