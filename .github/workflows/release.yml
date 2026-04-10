@@ -35,3 +35,6 @@ jobs:
 
     - name: Publish to VS Code Marketplace
       run: npx vsce publish -p ${{ secrets.VSCE_PAT }}
+
+    - name: Publish to Open VSX Registry
+      run: npx ovsx publish --pat ${{ secrets.OVSX_PAT }}

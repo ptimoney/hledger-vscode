@@ -384,7 +384,8 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "package": "vsce package",
-    "publish": "vsce publish"
+    "publish": "vsce publish",
+    "publish:ovsx": "ovsx publish --pat $OVSX_PAT"
   },
   "devDependencies": {
     "@types/chai": "^5.2.3",
@@ -395,6 +396,7 @@
     "@types/vscode": "^1.100.0",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.0.0",
+    "ovsx": "^0.9.0",
     "chai": "^6.2.2",
     "esbuild": "^0.28.0",
     "eslint": "^10.2.0",
