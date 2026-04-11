@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build hledger-lsp",
+            "type": "shell",
+            "command": "npm",
+            "args": ["--prefix", "${workspaceFolder}/../hledger-lsp", "run", "build"],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build hledger-vscode",
+            "type": "shell",
+            "command": "npm",
+            "args": ["--prefix", "${workspaceFolder}", "run", "compile"],
+            "group": "build",
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "showReuseMessage": false
+            },
+            "problemMatcher": ["$tsc"]
+        },
+        {
+            "label": "Build both (lsp + extension)",
+            "dependsOn": ["Build hledger-lsp", "Build hledger-vscode"],
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Watch hledger-lsp",
+            "type": "shell",
+            "command": "npm",
+            "args": ["--prefix", "${workspaceFolder}/../hledger-lsp", "run", "watch"],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated"
+            },
+            "problemMatcher": ["$tsc-watch"]
+        },
+        {
+            "label": "Watch hledger-vscode",
+            "type": "shell",
+            "command": "npm",
+            "args": ["--prefix", "${workspaceFolder}", "run", "watch"],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated"
+            },
+            "problemMatcher": ["$tsc-watch"]
+        }
+    ]
+}

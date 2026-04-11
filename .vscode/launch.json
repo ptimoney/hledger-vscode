@@ -1,0 +1,60 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Extension (No Debug)",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "preLaunchTask": "Build hledger-vscode"
+        },
+        {
+            "name": "Extension (Debug LSP)",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "env": {
+                "DEBUG_LSP": "true"
+            },
+            "preLaunchTask": "Build both (lsp + extension)"
+        },
+        {
+            "name": "Attach to LSP",
+            "type": "node",
+            "request": "attach",
+            "port": 6009,
+            "restart": false,
+            "outFiles": [
+                "${workspaceFolder}/../hledger-lsp/out/**/*.js"
+            ],
+            "sourceMaps": true,
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug Extension + LSP",
+            "configurations": [
+                "Extension (Debug LSP)",
+                "Attach to LSP"
+            ],
+            "stopAll": true,
+            "presentation": {
+                "group": "debug",
+                "order": 1
+            }
+        }
+    ]
+}
