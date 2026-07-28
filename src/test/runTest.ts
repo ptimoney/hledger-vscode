@@ -15,6 +15,9 @@ async function main() {
     await runTests({
       extensionDevelopmentPath,
       extensionTestsPath,
+      // Idle timeout for the VS Code download; the default 15s is too tight for
+      // the ~315MB archive and intermittently fails CI
+      timeout: 60_000,
       launchArgs: [
         '--disable-extensions', // Disable other extensions during tests
         '--disable-gpu', // Disable GPU for stability
