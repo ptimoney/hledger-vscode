@@ -13,7 +13,8 @@ import {
 import { WorkspaceGraphProvider } from './workspaceGraphProvider';
 
 let client: LanguageClient | undefined;
-let outputChannel = window.createOutputChannel('hledger Language Server');
+// vscode-languageclient 10 requires a LogOutputChannel for clientOptions.outputChannel
+let outputChannel = window.createOutputChannel('hledger Language Server', { log: true });
 let statusBarItem: StatusBarItem | undefined;
 let workspaceGraphProvider: WorkspaceGraphProvider | undefined;
 
