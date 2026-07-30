@@ -22,6 +22,12 @@ updates:
         update-types:
           - "version-update:semver-minor"
           - "version-update:semver-major"
+      # Stay on the 6.x line: TypeScript 7 is the native compiler rewrite and no
+      # longer exposes the in-process type checker API that typescript-eslint
+      # needs for typed linting. Revisit once typed linting supports it.
+      - dependency-name: "typescript"
+        update-types:
+          - "version-update:semver-major"
     labels:
       - "dependencies"
       - "npm"
