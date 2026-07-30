@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['18.x', '20.x']
+        node-version: ['22.x', '24.x']
 
     steps:
     - name: Checkout code
@@ -45,7 +45,7 @@ jobs:
       run: npm run build
 
     - name: Package (smoke test)
-      if: matrix.node-version != '18.x'
+      if: matrix.node-version != '22.x'
       run: npm run package
 
     - name: Upload VSIX artifact
@@ -72,7 +72,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v7
       with:
-        node-version: '20.x'
+        node-version: '22.x'
         cache: 'npm'
 
     - name: Install dependencies
