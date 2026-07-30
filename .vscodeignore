@@ -25,6 +25,7 @@ coverage/**
 
 # Development
 .vscode/**
+.github/**
 .gitignore
 .DS_Store
 node_modules/**
