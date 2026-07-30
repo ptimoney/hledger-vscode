@@ -394,7 +394,7 @@
     "@types/node": "^25.6.0",
     "@types/sinon": "^21.0.1",
     "@types/vscode": "^1.100.0",
-    "@vscode/test-electron": "^2.5.2",
+    "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.9.2",
     "ovsx": "^0.10.10",
     "chai": "^6.2.2",
