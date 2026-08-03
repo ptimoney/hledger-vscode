@@ -397,18 +397,18 @@
     "@types/vscode": "^1.100.0",
     "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.9.2",
-    "ovsx": "^1.0.2",
     "chai": "^6.2.2",
     "esbuild": "^0.28.1",
     "eslint": "^10.8.0",
     "glob": "^13.0.6",
     "mocha": "^11.7.6",
+    "ovsx": "^1.0.2",
     "sinon": "^22.1.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.65.0"
   },
   "dependencies": {
-    "hledger-lsp": "^0.6.4",
+    "hledger-lsp": "^0.7.0",
     "vscode-languageclient": "^10.1.0"
   }
 }
