@@ -409,6 +409,6 @@
   },
   "dependencies": {
     "hledger-lsp": "^0.7.0",
-    "vscode-languageclient": "^10.1.0"
+    "vscode-languageclient": "^10.1.2"
   }
 }
