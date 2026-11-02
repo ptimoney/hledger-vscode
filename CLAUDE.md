@@ -145,6 +145,9 @@ Tests use Mocha with the TDD interface and `@vscode/test-electron` to launch a V
 - `src/test/runTest.ts`: Downloads and launches VS Code with the extension
 - `src/test/suite/index.ts`: Configures Mocha and discovers test files
 - `src/test/suite/extension.test.ts`: Basic extension activation and command tests
+- `src/test/suite/externalEdit.test.ts`: End-to-end check that an on-disk edit to an unopened included journal refreshes diagnostics (skips on hledger-lsp < 0.8.0)
+
+`runTest.ts` opens a temp copy of `src/test/fixtures/external-edit/` as the test workspace, so tests may edit its files on disk.
 
 Tests use Sinon for mocking. The extension handles test environments by checking `process.env.NODE_ENV === 'test'` or `process.env.JEST_WORKER_ID` and allows activation without a real server module.
 

@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import { runTests } from '@vscode/test-electron';
 
@@ -11,6 +13,11 @@ async function main() {
     // Passed to --extensionTestsPath
     const extensionTestsPath = path.resolve(__dirname, './suite/index');
 
+    // Open a throwaway copy of the fixture workspace: tests edit its files on disk
+    const fixture = path.resolve(__dirname, '../../src/test/fixtures/external-edit');
+    const workspaceDir = fs.mkdtempSync(path.join(os.tmpdir(), 'hledger-vscode-test-'));
+    fs.cpSync(fixture, workspaceDir, { recursive: true });
+
     // Download VS Code, unzip it and run the integration test
     await runTests({
       extensionDevelopmentPath,
@@ -19,6 +26,7 @@ async function main() {
       // the ~315MB archive and intermittently fails CI
       timeout: 60_000,
       launchArgs: [
+        workspaceDir,
         '--disable-extensions', // Disable other extensions during tests
         '--disable-gpu', // Disable GPU for stability
       ],
