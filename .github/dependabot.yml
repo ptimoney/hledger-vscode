@@ -1,22 +1,27 @@
 version: 2
 updates:
-  # Monitor npm dependencies
+  # Monthly, grouped. Minor/patch dev-dep groups are auto-merged once CI passes
+  # (see workflows/dependabot-automerge.yml). Majors and runtime deps stay as
+  # individual PRs for manual review.
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily"
-    open-pull-requests-limit: 10
-    # Group minor and patch updates together to reduce PR noise
-    # hledger-lsp updates will remain separate (not grouped)
+      interval: "monthly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "chore(deps)"
+      prefix-development: "chore(deps-dev)"
     groups:
       development-dependencies:
+        applies-to: version-updates
         dependency-type: "development"
         update-types:
           - "minor"
           - "patch"
-        exclude-patterns:
-          - "hledger-lsp"
     ignore:
+      # hledger-lsp is bumped promptly by workflows/bump-hledger-lsp.yml so
+      # server fixes ship fast; Dependabot's monthly cadence would hold them back.
+      - dependency-name: "hledger-lsp"
       # Keep @types/vscode at minimum supported version to maintain backward compatibility
       - dependency-name: "@types/vscode"
         update-types:
@@ -32,12 +37,17 @@ updates:
       - "dependencies"
       - "npm"
 
-  # Monitor GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      actions:
+        update-types:
+          - "minor"
+          - "patch"
     labels:
       - "dependencies"
       - "github-actions"

@@ -1,0 +1,61 @@
+name: Bump hledger-lsp
+
+# Picks up new hledger-lsp releases promptly (Dependabot ignores it — its
+# monthly cadence is for toolchain churn). If lint, tests and build pass with
+# the new server, the bump is committed straight to main: no PR, no noise.
+# A failure shows up as a failed-workflow notification for manual follow-up.
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bump-hledger-lsp
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24.x"
+          cache: "npm"
+
+      - name: Check for a newer release
+        id: check
+        run: |
+          current=$(node -p "require('./package-lock.json').packages['node_modules/hledger-lsp'].version")
+          latest=$(npm view hledger-lsp version)
+          echo "current=$current latest=$latest"
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          if [ "$current" != "$latest" ]; then echo "update=true" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Install new version
+        if: steps.check.outputs.update == 'true'
+        run: |
+          npm ci
+          npm install "hledger-lsp@^${{ steps.check.outputs.latest }}"
+
+      - name: Test (includes compile + lint)
+        if: steps.check.outputs.update == 'true'
+        run: xvfb-run -a npm test
+
+      - name: Build
+        if: steps.check.outputs.update == 'true'
+        run: npm run build
+
+      - name: Commit to main
+        if: steps.check.outputs.update == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "Bump hledger-lsp from ${{ steps.check.outputs.current }} to ${{ steps.check.outputs.latest }}"
+          git pull --rebase origin main
+          git push origin HEAD:main
