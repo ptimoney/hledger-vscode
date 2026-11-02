@@ -392,23 +392,23 @@
     "@types/chai": "^5.2.3",
     "@types/glob": "^9.0.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^26.1.2",
-    "@types/sinon": "^22.0.0",
+    "@types/node": "^26.6.5",
+    "@types/sinon": "^22.0.1",
     "@types/vscode": "^1.100.0",
     "@vscode/test-electron": "^3.1.0",
-    "@vscode/vsce": "^3.9.2",
-    "chai": "^6.2.2",
-    "esbuild": "^0.28.1",
-    "eslint": "^10.8.0",
+    "@vscode/vsce": "^4.0.0",
+    "ovsx": "^1.3.0",
+    "chai": "^6.3.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.13.0",
     "glob": "^13.0.6",
-    "mocha": "^11.7.6",
-    "ovsx": "^1.0.2",
+    "mocha": "^12.0.3",
     "sinon": "^22.1.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0"
+    "typescript-eslint": "^8.72.0"
   },
   "dependencies": {
     "hledger-lsp": "^0.7.0",
-    "vscode-languageclient": "^10.1.0"
+    "vscode-languageclient": "^11.0.0"
   }
 }
