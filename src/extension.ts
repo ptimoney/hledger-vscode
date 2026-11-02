@@ -159,10 +159,6 @@ export function activate(context: ExtensionContext) {
       { scheme: 'file', language: 'hledger' },
       { scheme: 'untitled', language: 'hledger' }
     ],
-    synchronize: {
-      // Notify the server about file changes to '.clientrc' files contained in the workspace
-      fileEvents: workspace.createFileSystemWatcher('**/.clientrc')
-    },
     outputChannel,
     connectionOptions: {
       maxRestartCount: 5,
